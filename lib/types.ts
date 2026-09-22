@@ -27,6 +27,8 @@ export interface TimelineActivity {
   reservationRequired?: boolean;
   weatherBackup?: string;
   isHighlight?: boolean;
+  /** Curated photo ids from `tripPhotos`. Falls back to the destination gallery when empty. */
+  photoIds?: string[];
 }
 
 export interface DrivingLeg {

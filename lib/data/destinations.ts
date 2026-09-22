@@ -177,3 +177,7 @@ export const destinations: Destination[] = [
 export function getDestinationById(destinationId: string): Destination | undefined {
   return destinations.find((destination) => destination.id === destinationId);
 }
+
+export function getDestinationIdForDay(dayNumber: number): string | undefined {
+  return destinations.find((destination) => destination.dayNumbers.includes(dayNumber))?.id;
+}

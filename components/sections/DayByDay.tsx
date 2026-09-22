@@ -3,7 +3,10 @@
 import { clsx } from "clsx";
 import { useState } from "react";
 import { Badge } from "@/components/ui/Badge";
+import { Modal } from "@/components/ui/Modal";
+import { getDestinationIdForDay } from "@/lib/data/destinations";
 import { itinerary } from "@/lib/data/itinerary";
+import { getActivityPhotos, getUnsplashUrl } from "@/lib/data/photos";
 import {
   formatDuration,
   formatEur,
@@ -31,10 +34,10 @@ const ACTIVITY_ICONS: Record<string, string> = {
 interface ActivityItemProps {
   activity: TimelineActivity;
   isLast: boolean;
+  onSelect: (activity: TimelineActivity) => void;
 }
 
-function ActivityItem({ activity, isLast }: ActivityItemProps) {
-  const [isBackupOpen, setIsBackupOpen] = useState(false);
+function ActivityItem({ activity, isLast, onSelect }: ActivityItemProps) {
   const icon = ACTIVITY_ICONS[activity.type] ?? "📍";
 
   return (
@@ -56,17 +59,17 @@ function ActivityItem({ activity, isLast }: ActivityItemProps) {
         )}
       </div>
 
-      {/* Contenido de la actividad */}
-      <div className="pb-6 flex-1 min-w-0">
+      {/* Fila compacta de la actividad — abre el detalle al hacer clic */}
+      <button
+        type="button"
+        onClick={() => onSelect(activity)}
+        className="pb-6 flex-1 min-w-0 text-left group"
+      >
         <div className="flex items-start justify-between gap-2 mb-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-mono text-[var(--color-text-muted)]">{activity.time}</span>
-            {activity.isHighlight && (
-              <Badge variant="accent">⭐ Destacado</Badge>
-            )}
-            {activity.reservationRequired && (
-              <Badge variant="crimson">Reserva obligatoria</Badge>
-            )}
+            {activity.isHighlight && <Badge variant="accent">⭐ Destacado</Badge>}
+            {activity.reservationRequired && <Badge variant="crimson">Reserva obligatoria</Badge>}
           </div>
           {activity.pricePerPerson !== undefined && activity.pricePerPerson > 0 && (
             <span className="text-xs text-[var(--color-accent)] font-medium flex-shrink-0">
@@ -75,9 +78,11 @@ function ActivityItem({ activity, isLast }: ActivityItemProps) {
           )}
         </div>
 
-        <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">{activity.title}</h4>
+        <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1 group-hover:text-[var(--color-accent)] transition-colors">
+          {activity.title}
+        </h4>
 
-        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-2">
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-1 mb-2">
           {activity.description}
         </p>
 
@@ -92,36 +97,137 @@ function ActivityItem({ activity, isLast }: ActivityItemProps) {
               👥 {getCrowdLevelLabel(activity.crowdLevel)}
             </span>
           )}
+          <span className="text-xs text-[var(--color-accent)] ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
+            Ver detalle →
+          </span>
         </div>
+      </button>
+    </div>
+  );
+}
 
-        {/* Plan alternativo por mal tiempo */}
-        {activity.weatherBackup && (
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={() => setIsBackupOpen(!isBackupOpen)}
-              className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors flex items-center gap-1"
+interface ActivityDetailModalProps {
+  activity: TimelineActivity | null;
+  destinationId: string | undefined;
+  onClose: () => void;
+}
+
+function ActivityDetailModal({ activity, destinationId, onClose }: ActivityDetailModalProps) {
+  const photos = activity ? getActivityPhotos(activity, destinationId) : [];
+  const heroPhoto = photos[0];
+  const extraPhotos = photos.slice(1);
+
+  return (
+    <Modal isOpen={activity !== null} onClose={onClose}>
+      {activity && (
+        <div>
+          {heroPhoto && (
+            <div className="relative h-56 sm:h-72 overflow-hidden rounded-t-2xl">
+              <img
+                src={getUnsplashUrl(heroPhoto.unsplashId)}
+                alt={heroPhoto.caption}
+                loading="lazy"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface)] via-transparent to-transparent" />
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Cerrar"
+                className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          <div className="p-6 relative">
+            {!heroPhoto && (
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Cerrar"
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-[var(--color-text-secondary)] flex items-center justify-center hover:text-[var(--color-accent)] transition-colors"
+              >
+                ✕
+              </button>
+            )}
+
+            <div className="flex items-center gap-2 flex-wrap mb-3">
+              <span className="text-xl" aria-hidden="true">
+                {ACTIVITY_ICONS[activity.type] ?? "📍"}
+              </span>
+              <span className="text-xs font-mono text-[var(--color-text-muted)]">{activity.time}</span>
+              {activity.isHighlight && <Badge variant="accent">⭐ Destacado</Badge>}
+              {activity.reservationRequired && <Badge variant="crimson">Reserva obligatoria</Badge>}
+            </div>
+
+            <h3
+              className="text-xl font-bold text-[var(--color-text-primary)] mb-3 pr-10"
+              style={{ fontFamily: "var(--font-display)" }}
             >
-              🌧️ Plan alternativo por lluvia
-              <span aria-hidden="true">{isBackupOpen ? "▲" : "▼"}</span>
-            </button>
-            {isBackupOpen && (
-              <p className="mt-1 text-xs text-[var(--color-text-muted)] bg-[var(--color-surface)] rounded-lg p-2 border border-[var(--color-border)] italic">
-                {activity.weatherBackup}
-              </p>
+              {activity.title}
+            </h3>
+
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
+              {activity.description}
+            </p>
+
+            <div className="flex items-center gap-4 flex-wrap mb-4">
+              {activity.durationMinutes && (
+                <span className="text-xs text-[var(--color-text-muted)]">
+                  ⏱ {formatDuration(activity.durationMinutes)}
+                </span>
+              )}
+              {activity.crowdLevel && (
+                <span className="text-xs text-[var(--color-text-muted)]">
+                  👥 {getCrowdLevelLabel(activity.crowdLevel)}
+                </span>
+              )}
+              {activity.pricePerPerson !== undefined && activity.pricePerPerson > 0 && (
+                <span className="text-xs text-[var(--color-accent)] font-medium">
+                  {formatEur(activity.pricePerPerson)}/pers.
+                </span>
+              )}
+            </div>
+
+            {extraPhotos.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto pb-2 mb-4">
+                {extraPhotos.map((photo) => (
+                  <img
+                    key={photo.id}
+                    src={getUnsplashUrl(photo.unsplashId)}
+                    alt={photo.caption}
+                    loading="lazy"
+                    className="w-28 h-20 object-cover rounded-lg flex-shrink-0"
+                  />
+                ))}
+              </div>
+            )}
+
+            {activity.weatherBackup && (
+              <div className="p-3 bg-[var(--color-surface-elevated)] rounded-lg border border-[var(--color-border)]">
+                <p className="text-xs font-semibold text-[var(--color-accent)] uppercase tracking-wider mb-1">
+                  🌧️ Plan alternativo por lluvia
+                </p>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  {activity.weatherBackup}
+                </p>
+              </div>
             )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </Modal>
   );
 }
 
 interface DayDetailProps {
   day: DayItinerary;
+  onSelectActivity: (activity: TimelineActivity) => void;
 }
 
-function DayDetail({ day }: DayDetailProps) {
+function DayDetail({ day, onSelectActivity }: DayDetailProps) {
   return (
     <div className="flex-1 min-w-0">
       {/* Encabezado del día */}
@@ -177,6 +283,7 @@ function DayDetail({ day }: DayDetailProps) {
             key={`${activity.time}-${activity.title}`}
             activity={activity}
             isLast={index === day.activities.length - 1}
+            onSelect={onSelectActivity}
           />
         ))}
       </div>
@@ -217,7 +324,9 @@ function DayDetail({ day }: DayDetailProps) {
 
 export function DayByDay() {
   const [selectedDay, setSelectedDay] = useState(1);
+  const [activeActivity, setActiveActivity] = useState<TimelineActivity | null>(null);
   const currentDay = itinerary.find((day) => day.dayNumber === selectedDay) ?? itinerary[0];
+  const destinationId = currentDay ? getDestinationIdForDay(currentDay.dayNumber) : undefined;
 
   return (
     <section id="itinerario" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -229,7 +338,7 @@ export function DayByDay() {
           Día a día
         </h2>
         <p className="text-[var(--color-text-secondary)]">
-          14 días · Selecciona un día para ver el itinerario completo
+          14 días · Selecciona un día y toca una actividad para ver el detalle con fotos
         </p>
       </div>
 
@@ -278,8 +387,14 @@ export function DayByDay() {
         </div>
 
         {/* Detalle del día seleccionado */}
-        {currentDay && <DayDetail day={currentDay} />}
+        {currentDay && <DayDetail day={currentDay} onSelectActivity={setActiveActivity} />}
       </div>
+
+      <ActivityDetailModal
+        activity={activeActivity}
+        destinationId={destinationId}
+        onClose={() => setActiveActivity(null)}
+      />
     </section>
   );
 }

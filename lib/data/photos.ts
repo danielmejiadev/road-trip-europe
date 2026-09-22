@@ -1,4 +1,4 @@
-import type { TripPhoto } from "@/lib/types";
+import type { TimelineActivity, TripPhoto } from "@/lib/types";
 
 // Photo IDs from Unsplash. Status "mock" means they are curated suggestions —
 // verify each loads correctly before publishing.
@@ -183,4 +183,18 @@ export function getPhotosByDestination(destinationId: string): TripPhoto[] {
 
 export function getPrimaryPhoto(destinationId: string): TripPhoto | undefined {
   return tripPhotos.find((photo) => photo.destinationId === destinationId);
+}
+
+// Returns the activity's curated photos when available, otherwise falls back
+// to the destination's general photo gallery so the detail view always has images.
+export function getActivityPhotos(activity: TimelineActivity, destinationId: string | undefined): TripPhoto[] {
+  const curatedPhotos = (activity.photoIds ?? [])
+    .map((photoId) => tripPhotos.find((photo) => photo.id === photoId))
+    .filter((photo): photo is TripPhoto => photo !== undefined);
+
+  if (curatedPhotos.length > 0) {
+    return curatedPhotos;
+  }
+
+  return destinationId ? getPhotosByDestination(destinationId) : [];
 }
