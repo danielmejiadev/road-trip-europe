@@ -1,8 +1,10 @@
-import { scenicDrives } from "@/lib/data/itinerary";
+"use client";
+
 import { getUnsplashUrl, getPhotoById } from "@/lib/data/photos";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatKm, formatDriveTime } from "@/utils/format";
+import { useTrip } from "@/lib/trip-context";
 
 const DIFFICULTY_LABELS = {
   easy: "Fácil",
@@ -17,6 +19,8 @@ const DIFFICULTY_VARIANTS = {
 } as const;
 
 export function ScenicDrives() {
+  const trip = useTrip();
+
   return (
     <section id="carreteras" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="mb-10">
@@ -32,9 +36,9 @@ export function ScenicDrives() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {scenicDrives.map((drive) => {
-          const photo = getPhotoById(drive.photoId);
-          const photoUrl = photo ? getUnsplashUrl(photo.unsplashId) : getUnsplashUrl("1541849546-216549ae216d");
+        {trip.scenicDrives.map((drive) => {
+          const photo = getPhotoById(trip.photos, drive.photoId);
+          const photoUrl = photo ? getUnsplashUrl(photo.unsplashId) : undefined;
 
           const difficultyVariant = DIFFICULTY_VARIANTS[drive.difficulty];
 
@@ -42,12 +46,14 @@ export function ScenicDrives() {
             <Card key={drive.id} elevated hoverable className="overflow-hidden">
               {/* Foto */}
               <div className="relative h-40 overflow-hidden">
-                <img
-                  src={photoUrl}
-                  alt={drive.name}
-                  loading="lazy"
-                  className="w-full h-full object-cover"
-                />
+                {photoUrl && (
+                  <img
+                    src={photoUrl}
+                    alt={drive.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-surface-elevated)] to-transparent" />
                 <div className="absolute bottom-3 left-3 flex gap-2">
                   <Badge variant={difficultyVariant as "emerald" | "accent" | "crimson"}>

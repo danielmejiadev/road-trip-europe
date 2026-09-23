@@ -67,6 +67,17 @@ export function getFatigueLevelDot(level: FatigueLevel): string {
   return dots[level];
 }
 
+// Converts an ISO 3166-1 alpha-2 code ("CZ", "FR"...) into its flag emoji by
+// mapping each letter to its Unicode regional indicator symbol — works for
+// any country any trip crosses, no per-trip lookup table needed.
+export function countryCodeToFlag(countryCode: string): string {
+  return countryCode
+    .toUpperCase()
+    .split("")
+    .map((letter) => String.fromCodePoint(0x1f1e6 + letter.charCodeAt(0) - 65))
+    .join("");
+}
+
 export function getCrowdLevelLabel(level: "low" | "moderate" | "high"): string {
   const labels = {
     low: "Poca gente",

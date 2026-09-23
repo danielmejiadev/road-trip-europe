@@ -323,28 +323,35 @@ export function getUnsplashUrl(unsplashId: string): string {
   return `https://images.unsplash.com/photo-${unsplashId}?w=1200&q=80&auto=format&fit=crop`;
 }
 
-export function getPhotosByDestination(destinationId: string): TripPhoto[] {
-  return tripPhotos.filter((photo) => photo.destinationId === destinationId);
+// All helpers below take the active trip's own `photos` array as the first
+// argument instead of closing over the module-level `tripPhotos`, so the same
+// logic works for whichever trip is currently open.
+export function getPhotosByDestination(photos: TripPhoto[], destinationId: string): TripPhoto[] {
+  return photos.filter((photo) => photo.destinationId === destinationId);
 }
 
-export function getPrimaryPhoto(destinationId: string): TripPhoto | undefined {
-  return tripPhotos.find((photo) => photo.destinationId === destinationId);
+export function getPrimaryPhoto(photos: TripPhoto[], destinationId: string): TripPhoto | undefined {
+  return photos.find((photo) => photo.destinationId === destinationId);
 }
 
-export function getPhotoById(photoId: string): TripPhoto | undefined {
-  return tripPhotos.find((photo) => photo.id === photoId);
+export function getPhotoById(photos: TripPhoto[], photoId: string): TripPhoto | undefined {
+  return photos.find((photo) => photo.id === photoId);
 }
 
 // Returns the activity's curated photos when available, otherwise falls back
 // to the destination's general photo gallery so the detail view always has images.
-export function getActivityPhotos(activity: TimelineActivity, destinationId: string | undefined): TripPhoto[] {
+export function getActivityPhotos(
+  photos: TripPhoto[],
+  activity: TimelineActivity,
+  destinationId: string | undefined,
+): TripPhoto[] {
   const curatedPhotos = (activity.photoIds ?? [])
-    .map((photoId) => tripPhotos.find((photo) => photo.id === photoId))
+    .map((photoId) => photos.find((photo) => photo.id === photoId))
     .filter((photo): photo is TripPhoto => photo !== undefined);
 
   if (curatedPhotos.length > 0) {
     return curatedPhotos;
   }
 
-  return destinationId ? getPhotosByDestination(destinationId) : [];
+  return destinationId ? getPhotosByDestination(photos, destinationId) : [];
 }

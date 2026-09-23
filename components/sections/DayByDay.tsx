@@ -5,17 +5,17 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { PhotoCarousel } from "@/components/ui/PhotoCarousel";
-import { getDestinationIdForDay } from "@/lib/data/destinations";
-import { itinerary } from "@/lib/data/itinerary";
 import { getActivityPhotos } from "@/lib/data/photos";
+import { useTrip } from "@/lib/trip-context";
 import {
   formatDuration,
   formatEur,
   getFatigueLevelLabel,
   getFatigueLevelDot,
   getCrowdLevelLabel,
+  countryCodeToFlag,
 } from "@/utils/format";
-import type { DayItinerary, TimelineActivity } from "@/lib/types";
+import type { DayItinerary, TimelineActivity, TripPhoto } from "@/lib/types";
 
 const ACTIVITY_ICONS: Record<string, string> = {
   arrival: "✈️",
@@ -109,12 +109,11 @@ function ActivityItem({ activity, isLast, onSelect }: ActivityItemProps) {
 
 interface ActivityDetailModalProps {
   activity: TimelineActivity | null;
-  destinationId: string | undefined;
+  photos: TripPhoto[];
   onClose: () => void;
 }
 
-function ActivityDetailModal({ activity, destinationId, onClose }: ActivityDetailModalProps) {
-  const photos = activity ? getActivityPhotos(activity, destinationId) : [];
+function ActivityDetailModal({ activity, photos, onClose }: ActivityDetailModalProps) {
 
   return (
     <Modal isOpen={activity !== null} onClose={onClose}>
@@ -219,7 +218,7 @@ function DayDetail({ day, onSelectActivity }: DayDetailProps) {
       {/* Encabezado del día */}
       <div className="mb-6 pb-6 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-3 mb-2 flex-wrap">
-          <span className="text-2xl" aria-hidden="true">{day.countryCode === "CZ" ? "🇨🇿" : day.countryCode === "AT" ? "🇦🇹" : day.countryCode === "HU" ? "🇭🇺" : day.countryCode === "SI" ? "🇸🇮" : "🇮🇹"}</span>
+          <span className="text-2xl" aria-hidden="true">{countryCodeToFlag(day.countryCode)}</span>
           <Badge variant="accent">Día {day.dayNumber}</Badge>
           <Badge variant="default">
             {getFatigueLevelDot(day.fatigueLevel)} {getFatigueLevelLabel(day.fatigueLevel)}
@@ -309,10 +308,14 @@ function DayDetail({ day, onSelectActivity }: DayDetailProps) {
 }
 
 export function DayByDay() {
+  const trip = useTrip();
   const [selectedDay, setSelectedDay] = useState(1);
   const [activeActivity, setActiveActivity] = useState<TimelineActivity | null>(null);
-  const currentDay = itinerary.find((day) => day.dayNumber === selectedDay) ?? itinerary[0];
-  const destinationId = currentDay ? getDestinationIdForDay(currentDay.dayNumber) : undefined;
+  const currentDay = trip.itinerary.find((day) => day.dayNumber === selectedDay) ?? trip.itinerary[0];
+  const destinationId = currentDay
+    ? trip.destinations.find((destination) => destination.dayNumbers.includes(currentDay.dayNumber))?.id
+    : undefined;
+  const activityPhotos = activeActivity ? getActivityPhotos(trip.photos, activeActivity, destinationId) : [];
 
   return (
     <section id="itinerario" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -324,14 +327,14 @@ export function DayByDay() {
           Día a día
         </h2>
         <p className="text-[var(--color-text-secondary)]">
-          14 días · Selecciona un día y toca una actividad para ver el detalle con fotos
+          {trip.meta.days} días · Selecciona un día y toca una actividad para ver el detalle con fotos
         </p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-6 lg:gap-10">
         {/* Selector de días — columna izquierda */}
         <aside className="hidden sm:flex flex-col gap-1 flex-shrink-0" style={{ minWidth: "120px" }}>
-          {itinerary.map((day) => (
+          {trip.itinerary.map((day) => (
             <button
               key={day.dayNumber}
               type="button"
@@ -354,7 +357,7 @@ export function DayByDay() {
         {/* Selector mobile: scroll horizontal de botones */}
         <div className="sm:hidden w-full">
           <div className="flex gap-2 overflow-x-auto pb-3 mb-4">
-            {itinerary.map((day) => (
+            {trip.itinerary.map((day) => (
               <button
                 key={day.dayNumber}
                 type="button"
@@ -378,7 +381,7 @@ export function DayByDay() {
 
       <ActivityDetailModal
         activity={activeActivity}
-        destinationId={destinationId}
+        photos={activityPhotos}
         onClose={() => setActiveActivity(null)}
       />
     </section>

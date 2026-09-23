@@ -1,7 +1,9 @@
+"use client";
+
 import { Card } from "@/components/ui/Card";
-import { budgetCategories } from "@/lib/data/budget";
 import { formatEur } from "@/utils/format";
 import { getBudgetSummary } from "@/utils/budget";
+import { useTrip } from "@/lib/trip-context";
 
 interface StatTile {
   icon: string;
@@ -11,14 +13,25 @@ interface StatTile {
 }
 
 export function TripDashboard() {
-  const budgetSummary = getBudgetSummary(budgetCategories);
+  const trip = useTrip();
+  const budgetSummary = getBudgetSummary(trip.budgetCategories);
 
   const statTiles: StatTile[] = [
-    { icon: "👥", value: "4", label: "Viajeros", sublabel: "2 parejas" },
-    { icon: "🌍", value: "5", label: "Países", sublabel: "CZ · AT · HU · SI · IT" },
-    { icon: "🚗", value: "1.805 km", label: "En carretera", sublabel: "~22h de conducción" },
-    { icon: "🏨", value: "14", label: "Noches", sublabel: "8 destinos" },
-    { icon: "📅", value: "14", label: "Días", sublabel: "1-14 septiembre 2027" },
+    { icon: "👥", value: String(trip.meta.travelers), label: "Viajeros", sublabel: `${Math.round(trip.meta.travelers / 2)} parejas` },
+    {
+      icon: "🌍",
+      value: String(trip.meta.countries.length),
+      label: trip.meta.countries.length === 1 ? "País" : "Países",
+      sublabel: trip.meta.countryFlags,
+    },
+    {
+      icon: "🚗",
+      value: `${trip.meta.approxDistanceKm.toLocaleString("es-ES")} km`,
+      label: "En carretera",
+      sublabel: `~${trip.meta.approxDrivingHours}h de conducción`,
+    },
+    { icon: "🏨", value: String(trip.meta.nights), label: "Noches", sublabel: `${trip.destinations.length} destinos` },
+    { icon: "📅", value: String(trip.meta.days), label: "Días", sublabel: trip.meta.season },
     {
       icon: "💶",
       value: `~${formatEur(budgetSummary.totalPerPerson)}`,
@@ -37,7 +50,7 @@ export function TripDashboard() {
           El viaje en números
         </h2>
         <p className="text-[var(--color-text-secondary)] text-lg">
-          De Praga a Venecia · Septiembre 2027
+          De {trip.meta.startCity} a {trip.meta.endCity} · {trip.meta.season}
         </p>
       </div>
 

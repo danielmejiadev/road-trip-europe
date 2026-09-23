@@ -1,23 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { destinations } from "@/lib/data/destinations";
-import { itinerary } from "@/lib/data/itinerary";
 import { getUnsplashUrl, getPrimaryPhoto, getPhotosByDestination } from "@/lib/data/photos";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { PhotoCarousel } from "@/components/ui/PhotoCarousel";
-import type { Destination } from "@/lib/types";
+import { useTrip } from "@/lib/trip-context";
+import type { Destination, TripPhoto, DayItinerary } from "@/lib/types";
 
 interface DestinationDetailModalProps {
   destination: Destination | null;
+  photos: TripPhoto[];
+  days: DayItinerary[];
   onClose: () => void;
 }
 
-function DestinationDetailModal({ destination, onClose }: DestinationDetailModalProps) {
-  const photos = destination ? getPhotosByDestination(destination.id) : [];
-  const days = destination ? itinerary.filter((day) => destination.dayNumbers.includes(day.dayNumber)) : [];
-
+function DestinationDetailModal({ destination, photos, days, onClose }: DestinationDetailModalProps) {
   return (
     <Modal isOpen={destination !== null} onClose={onClose}>
       {destination && (
@@ -123,7 +121,13 @@ function DestinationDetailModal({ destination, onClose }: DestinationDetailModal
 }
 
 export function PhotoJourney() {
+  const trip = useTrip();
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
+
+  const selectedPhotos = selectedDestination ? getPhotosByDestination(trip.photos, selectedDestination.id) : [];
+  const selectedDays = selectedDestination
+    ? trip.itinerary.filter((day) => selectedDestination.dayNumbers.includes(day.dayNumber))
+    : [];
 
   return (
     <section id="destinos" className="py-16">
@@ -135,18 +139,17 @@ export function PhotoJourney() {
           El recorrido
         </h2>
         <p className="text-[var(--color-text-secondary)]">
-          8 destinos · 5 países · Toca una tarjeta para ver el detalle completo
+          {trip.destinations.length} destinos · {trip.meta.countries.length}{" "}
+          {trip.meta.countries.length === 1 ? "país" : "países"} · Toca una tarjeta para ver el detalle completo
         </p>
       </div>
 
       {/* Scroll horizontal de destinos */}
       <div className="overflow-x-auto scroll-x pb-4">
         <div className="flex gap-4 px-4 sm:px-6 lg:px-8" style={{ width: "max-content" }}>
-          {destinations.map((destination, index) => {
-            const primaryPhoto = getPrimaryPhoto(destination.id);
-            const photoUrl = primaryPhoto
-              ? getUnsplashUrl(primaryPhoto.unsplashId)
-              : getUnsplashUrl("1541849546-216549ae216d");
+          {trip.destinations.map((destination, index) => {
+            const primaryPhoto = getPrimaryPhoto(trip.photos, destination.id);
+            const photoUrl = primaryPhoto ? getUnsplashUrl(primaryPhoto.unsplashId) : undefined;
 
             return (
               <article
@@ -161,12 +164,14 @@ export function PhotoJourney() {
                   className="absolute inset-0 w-full h-full text-left cursor-pointer"
                 >
                   {/* Foto de fondo */}
-                  <img
-                    src={photoUrl}
-                    alt={`${destination.name}, ${destination.country}`}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+                  {photoUrl && (
+                    <img
+                      src={photoUrl}
+                      alt={`${destination.name}, ${destination.country}`}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  )}
 
                   {/* Overlay degradado */}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/30 to-transparent" />
@@ -209,7 +214,7 @@ export function PhotoJourney() {
                 </button>
 
                 {/* Separador de flecha entre destinos (excepto en el último) */}
-                {index < destinations.length - 1 && (
+                {index < trip.destinations.length - 1 && (
                   <div className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-full bg-[var(--color-surface-elevated)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-accent)] text-xs">
                     →
                   </div>
@@ -220,7 +225,12 @@ export function PhotoJourney() {
         </div>
       </div>
 
-      <DestinationDetailModal destination={selectedDestination} onClose={() => setSelectedDestination(null)} />
+      <DestinationDetailModal
+        destination={selectedDestination}
+        photos={selectedPhotos}
+        days={selectedDays}
+        onClose={() => setSelectedDestination(null)}
+      />
     </section>
   );
 }

@@ -1,13 +1,23 @@
-import { budgetCategories, vignettes, drivingLegs } from "@/lib/data/budget";
-import { itinerary } from "@/lib/data/itinerary";
+"use client";
+
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatEur } from "@/utils/format";
 import { getBudgetSummary, getDayCostSummaries } from "@/utils/budget";
+import { useTrip } from "@/lib/trip-context";
+import type { VerificationStatus } from "@/lib/types";
+
+const VERIFICATION_DOTS: Record<VerificationStatus, string> = {
+  confirmed: "🟢",
+  estimated: "🟡",
+  "needs-verification": "🔴",
+};
 
 export function BudgetSection() {
-  const budgetSummary = getBudgetSummary(budgetCategories);
-  const dayCostSummaries = getDayCostSummaries(itinerary);
+  const trip = useTrip();
+  const budgetSummary = getBudgetSummary(trip.budgetCategories);
+  const dayCostSummaries = getDayCostSummaries(trip.itinerary);
+  const totalDrivingKm = trip.drivingLegs.reduce((sum, leg) => sum + leg.distanceKm, 0);
 
   return (
     <section id="presupuesto" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -19,7 +29,7 @@ export function BudgetSection() {
           Presupuesto estimado
         </h2>
         <p className="text-[var(--color-text-secondary)]">
-          Estimación para 4 personas · Septiembre 2027
+          Estimación para {trip.meta.travelers} personas · {trip.meta.season} · 🟢 Confirmado · 🟡 Estimado · 🔴 Por verificar
         </p>
       </div>
 
@@ -78,8 +88,13 @@ export function BudgetSection() {
                     <div className="flex items-center gap-3">
                       <span className="text-xl" aria-hidden="true">{budgetCategory.icon}</span>
                       <div>
-                        <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                        <p className="text-sm font-medium text-[var(--color-text-primary)] flex items-center gap-1.5">
                           {budgetCategory.category}
+                          {budgetCategory.verificationStatus && (
+                            <span aria-hidden="true" title={budgetCategory.verificationStatus}>
+                              {VERIFICATION_DOTS[budgetCategory.verificationStatus]}
+                            </span>
+                          )}
                         </p>
                         {budgetCategory.notes && (
                           <p className="text-xs text-[var(--color-text-muted)] hidden sm:block">
@@ -148,7 +163,7 @@ export function BudgetSection() {
             🛣️ Viñetas y peajes por país
           </h3>
           <div className="space-y-3">
-            {vignettes.map((vignette) => (
+            {trip.vignettes.map((vignette) => (
               <Card key={vignette.country} className="p-4 flex items-start gap-3">
                 <Badge variant={vignette.required ? "crimson" : "emerald"}>
                   {vignette.required ? "Obligatoria" : "Sin viñeta"}
@@ -170,8 +185,8 @@ export function BudgetSection() {
             🗺️ Etapas de conducción
           </h3>
           <div className="space-y-2">
-            {drivingLegs.map((leg) => (
-              <Card key={leg.from} className="p-3 flex items-center justify-between gap-4">
+            {trip.drivingLegs.map((leg) => (
+              <Card key={`${leg.from}-${leg.to}`} className="p-3 flex items-center justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-[var(--color-text-primary)] font-medium truncate">
                     {leg.from} → {leg.to}
@@ -186,8 +201,10 @@ export function BudgetSection() {
             <Card className="p-3 flex items-center justify-between gap-4 border-[var(--color-accent)]/30 bg-[var(--color-accent-soft)]">
               <p className="text-sm font-bold text-[var(--color-accent)]">Total carretera</p>
               <div className="flex items-center gap-3">
-                <span className="text-xs font-bold text-[var(--color-accent)]">~1.805 km</span>
-                <Badge variant="accent">~22h</Badge>
+                <span className="text-xs font-bold text-[var(--color-accent)]">
+                  ~{totalDrivingKm.toLocaleString("es-ES")} km
+                </span>
+                <Badge variant="accent">~{trip.meta.approxDrivingHours}h</Badge>
               </div>
             </Card>
           </div>

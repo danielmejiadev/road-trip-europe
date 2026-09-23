@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import { icon as leafletIcon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/types";
 
 // Leaflet requires custom icon setup in Next.js (no direct CSS asset pipeline).
 const markerIcon = leafletIcon({
@@ -17,19 +16,23 @@ const markerIcon = leafletIcon({
   shadowSize: [41, 41],
 });
 
-const routeCoordinates: [number, number][] = destinations.map((destination) => [
-  destination.lat,
-  destination.lng,
-]);
+interface TripMapProps {
+  destinations: Destination[];
+  accentColor: string;
+}
 
-export default function TripMap() {
-  useEffect(() => {
-    // Ensure Leaflet runs only in the browser
-  }, []);
+export default function TripMap({ destinations, accentColor }: TripMapProps) {
+  const routeCoordinates: [number, number][] = destinations.map((destination) => [
+    destination.lat,
+    destination.lng,
+  ]);
+
+  const centerLat = routeCoordinates.reduce((sum, [lat]) => sum + lat, 0) / routeCoordinates.length;
+  const centerLng = routeCoordinates.reduce((sum, [, lng]) => sum + lng, 0) / routeCoordinates.length;
 
   return (
     <MapContainer
-      center={[48.5, 15.0]}
+      center={[centerLat, centerLng]}
       zoom={5}
       style={{ height: "100%", width: "100%", borderRadius: "12px" }}
       className="z-10"
@@ -43,7 +46,7 @@ export default function TripMap() {
       <Polyline
         positions={routeCoordinates}
         pathOptions={{
-          color: "#e8b86d",
+          color: accentColor,
           weight: 3,
           opacity: 0.9,
           dashArray: "10, 8",

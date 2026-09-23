@@ -78,6 +78,9 @@ export interface Destination {
   whyThisPlace: string;
 }
 
+/** How confident we are in a hand-entered real-world value (price, hours, toll cost, etc.). */
+export type VerificationStatus = "confirmed" | "estimated" | "needs-verification";
+
 export interface Hotel {
   destinationId: string;
   name: string;
@@ -85,6 +88,7 @@ export interface Hotel {
   pricePerRoom: number;
   notes: string;
   bookingTip?: string;
+  verificationStatus?: VerificationStatus;
 }
 
 export interface BudgetCategory {
@@ -95,6 +99,7 @@ export interface BudgetCategory {
   unitCost: number;
   total: number;
   notes?: string;
+  verificationStatus?: VerificationStatus;
 }
 
 export interface BudgetSummary {
@@ -163,4 +168,75 @@ export interface MapMarker {
   dayNumbers: number[];
   nights: number;
   countryFlag: string;
+}
+
+/**
+ * Fixed vocabulary for trip-personality filters/tags. Descriptive only —
+ * never used to score or rank trips against each other.
+ */
+export type TripTagKey =
+  | "mountains"
+  | "medieval"
+  | "history"
+  | "coast"
+  | "food-wine"
+  | "scenic-driving"
+  | "photography"
+  | "beaches"
+  | "countryside"
+  | "lower-budget"
+  | "romantic";
+
+export interface TripTag {
+  key: TripTagKey;
+  emoji: string;
+  label: string;
+}
+
+/** Distinct visual identity per trip — overrides the global accent CSS vars within that trip's subtree. */
+export interface TripColorTheme {
+  accent: string;
+  accentSoft: string;
+}
+
+export interface DrivingLegSummary {
+  from: string;
+  to: string;
+  distanceKm: number;
+  driveTime: string;
+}
+
+export interface TripMeta {
+  id: string;
+  title: string;
+  subtitle: string;
+  countryFlags: string;
+  countries: string[];
+  routeSummary: string;
+  startCity: string;
+  endCity: string;
+  days: number;
+  nights: number;
+  approxDistanceKm: number;
+  approxDrivingHours: number;
+  tripStyle: string;
+  tags: TripTag[];
+  /** Relative cost bracket vs. the other trips in the explorer — descriptive, never a ranking. */
+  budgetTier: "lower" | "moderate" | "higher";
+  colorTheme: TripColorTheme;
+  season: string;
+  travelers: number;
+  heroPhotoId: string;
+}
+
+export interface Trip {
+  meta: TripMeta;
+  destinations: Destination[];
+  itinerary: DayItinerary[];
+  hotels: Hotel[];
+  budgetCategories: BudgetCategory[];
+  vignettes: Vignette[];
+  drivingLegs: DrivingLegSummary[];
+  photos: TripPhoto[];
+  scenicDrives: ScenicDrive[];
 }

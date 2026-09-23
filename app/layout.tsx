@@ -17,12 +17,12 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "De Praga a Venecia · Road Trip Septiembre 2027",
+  title: "Europe Road Trip Explorer",
   description:
-    "Planificador interactivo de road trip: Praga → Český Krumlov → Hallstatt → Budapest → Bled → Soča → Dolomitas → Venecia. 14 días, 5 países, 4 viajeros.",
+    "Explora siete road trips distintos por Europa: itinerario día a día, mapa interactivo, presupuesto y fotos de cada ruta.",
   openGraph: {
-    title: "De Praga a Venecia · Road Trip Septiembre 2027",
-    description: "14 días por Europa · 5 países · 1.805 km · 4 viajeros",
+    title: "Europe Road Trip Explorer",
+    description: "Siete road trips por Europa — elige una ruta, compara y explora el itinerario completo.",
     type: "website",
   },
 };
