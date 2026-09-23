@@ -253,7 +253,7 @@ export const itinerary: DayItinerary[] = [
     hotel: "Pension Unitas o similar en Malá Strana",
     hotelPricePerRoom: 90,
     tips: [
-      "Mañana se recoge el coche: confirmar el punto de recogida la noche anterior",
+      "Mañana se recoge el carro: confirmar el punto de recogida la noche anterior",
       "El Puente de Carlos a las 10pm es la mejor versión para los 4",
     ],
   },
@@ -266,7 +266,7 @@ export const itinerary: DayItinerary[] = [
     country: "República Checa",
     countryCode: "CZ",
     title: "Praga → Český Krumlov · 185 km · Primera conducción",
-    summary: "Recogida del coche, primera conducción por Bohemia del Sur hasta el pueblo de cuento.",
+    summary: "Recogida del carro, primera conducción por Bohemia del Sur hasta el pueblo de cuento.",
     fatigueLevel: "moderate",
     hasDriving: true,
     drivingLeg: {
@@ -281,7 +281,7 @@ export const itinerary: DayItinerary[] = [
       {
         time: "09:00",
         type: "departure",
-        title: "Recogida del coche",
+        title: "Recogida del carro",
         photoIds: ["generic-road-trip"],
         description: "Recogida en la agencia (aeropuerto o Holešovice). Inspección del vehículo, configurar GPS. Primer conductor del viaje.",
         durationMinutes: 45,
@@ -603,7 +603,7 @@ export const itinerary: DayItinerary[] = [
     hotelPricePerRoom: 100,
     tips: [
       "Budapest tiene parking complicado y caro en el centro — usar el hotel o garaje",
-      "Viñeta húngara: comprar online antes de entrar, se vincula a la matrícula del coche",
+      "Viñeta húngara: comprar online antes de entrar, se vincula a la matrícula del carro",
     ],
   },
 
@@ -943,7 +943,7 @@ export const itinerary: DayItinerary[] = [
         type: "sightseeing",
         title: "Lago Bohinj · Tarde en la naturaleza",
         photoIds: ["lake-bohinj"],
-        description: "30 min en coche hasta el lago Bohinj, más grande y tranquilo. Baño si la temperatura lo permite, paseo por la orilla o cable car a Vogel (vistas espectaculares si el cielo está despejado).",
+        description: "30 min en carro hasta el lago Bohinj, más grande y tranquilo. Baño si la temperatura lo permite, paseo por la orilla o cable car a Vogel (vistas espectaculares si el cielo está despejado).",
         context: "El lago, de origen glaciar, es también la puerta de entrada al valle del Triglav, el parque nacional más grande de Eslovenia.",
         durationMinutes: 180,
         pricePerPerson: 25,
@@ -1083,7 +1083,7 @@ export const itinerary: DayItinerary[] = [
         type: "hike",
         title: "Cascada de Kozjak · Senderismo desde Kobarid",
         photoIds: ["soca-kozjak-waterfall"],
-        description: "30 min en coche hasta Kobarid + 45 min a pie (ida y vuelta). La cascada cae en una cueva natural formando una piscina turquesa. Espectacular.",
+        description: "30 min en carro hasta Kobarid + 45 min a pie (ida y vuelta). La cascada cae en una cueva natural formando una piscina turquesa. Espectacular.",
         context: "Escondida en un anfiteatro de roca cubierto de musgo, al que solo se llega caminando por un desfiladero, la cascada cae unos 15 metros dentro de una gruta semicerrada de aguas turquesas.",
         durationMinutes: 90,
         isHighlight: true,
@@ -1233,7 +1233,7 @@ export const itinerary: DayItinerary[] = [
     country: "Italia",
     countryCode: "IT",
     title: "Dolomitas → Venecia · El final de ensueño",
-    summary: "Amanecer en Alpe di Siusi, devolución del coche en Mestre y primera noche en Venecia.",
+    summary: "Amanecer en Alpe di Siusi, devolución del carro en Mestre y primera noche en Venecia.",
     fatigueLevel: "moderate",
     hasDriving: true,
     drivingLeg: {
@@ -1242,7 +1242,7 @@ export const itinerary: DayItinerary[] = [
       distanceKm: 210,
       driveTimeMinutes: 150,
       stops: ["Alpe di Siusi (mañana)", "Agencia de alquiler en Mestre"],
-      notes: "Devolver el coche en Mestre, NO en Venecia — las agencias en la isla son carísimas y hay ZTL. Trenitalia: Mestre → Venezia Santa Lucia (7 min, €2/persona).",
+      notes: "Devolver el carro en Mestre, NO en Venecia — las agencias en la isla son carísimas y hay ZTL. Trenitalia: Mestre → Venezia Santa Lucia (7 min, €2/persona).",
     },
     activities: [
       {
@@ -1269,9 +1269,9 @@ export const itinerary: DayItinerary[] = [
       {
         time: "15:30",
         type: "departure",
-        title: "Devolución del coche en Mestre",
+        title: "Devolución del carro en Mestre",
         photoIds: ["generic-road-trip"],
-        description: "Entregar el coche en la agencia de Mestre. Inspección final. Coger el equipaje.",
+        description: "Entregar el carro en la agencia de Mestre. Inspección final. Coger el equipaje.",
         durationMinutes: 30,
       },
       {
@@ -1331,7 +1331,7 @@ export const itinerary: DayItinerary[] = [
     hotel: "B&B en Cannaregio",
     hotelPricePerRoom: 130,
     tips: [
-      "Devolver el coche en Mestre, no en Venecia: ahorra €50-100 y evita la ZTL",
+      "Devolver el carro en Mestre, no en Venecia: ahorra €50-100 y evita la ZTL",
       "Cannaregio: barrio más auténtico de Venecia, alejado de los cruceros y multitudes",
       "Los cicchetti en los bacari son la manera más barata y auténtica de comer en Venecia",
     ],

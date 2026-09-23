@@ -25,7 +25,7 @@ export const destinations: Destination[] = [
     locationDescription:
       "Capital de la República Checa, a orillas del río Vltava, en pleno centro de Europa — a unos 350 km de Berlín, 330 km de Viena y 280 km de Múnich.",
     whyThisPlace:
-      "Es el punto de partida obvio: vuelos baratos desde casi cualquier ciudad, un casco histórico medieval que sobrevivió intacto a las dos guerras mundiales, y una ciudad que se disfruta perfectamente a pie y en transporte público antes de recoger el coche de alquiler el día 4.",
+      "Es el punto de partida obvio: vuelos baratos desde casi cualquier ciudad, un casco histórico medieval que sobrevivió intacto a las dos guerras mundiales, y una ciudad que se disfruta perfectamente a pie y en transporte público antes de recoger el carro de alquiler el día 4.",
   },
   {
     id: "cesky-krumlov",
@@ -50,7 +50,7 @@ export const destinations: Destination[] = [
     locationDescription:
       "Pueblo medieval a 170 km al sur de Praga, en la región de Bohemia del Sur, muy cerca de la frontera con Austria.",
     whyThisPlace:
-      "Es la escala perfecta para la primera etapa en coche: solo 2h30 desde Praga, rompe el trayecto largo hacia Austria y permite dormir en un pueblo Patrimonio de la Humanidad que la mayoría de turistas solo ve en una excursión de un día desde Praga.",
+      "Es la escala perfecta para la primera etapa en carro: solo 2h30 desde Praga, rompe el trayecto largo hacia Austria y permite dormir en un pueblo Patrimonio de la Humanidad que la mayoría de turistas solo ve en una excursión de un día desde Praga.",
   },
   {
     id: "austria",
@@ -151,7 +151,7 @@ export const destinations: Destination[] = [
     locationDescription:
       "Valle alpino en el extremo noroeste de Eslovenia, pegado a la frontera italiana, conectado con Bled a través del legendario Paso de Vršič.",
     whyThisPlace:
-      "Es la única forma de cruzar los Alpes Julianos en coche sin dar un rodeo de horas: el Vršič conecta Bled con Italia en un solo día épico de curvas, y de paso descubre uno de los ríos más fotogénicos de Europa que casi ningún itinerario de 'lo esencial de Eslovenia' incluye.",
+      "Es la única forma de cruzar los Alpes Julianos en carro sin dar un rodeo de horas: el Vršič conecta Bled con Italia en un solo día épico de curvas, y de paso descubre uno de los ríos más fotogénicos de Europa que casi ningún itinerario de 'lo esencial de Eslovenia' incluye.",
   },
   {
     id: "dolomites",
@@ -191,7 +191,7 @@ export const destinations: Destination[] = [
     description:
       "El final de ensueño. Venecia en Septiembre todavía guarda algo de luz mediterránea y menos turistas que en verano. El Canal Grande, el Rialto y San Marcos al atardecer.",
     highlights: [
-      "Devolución del coche en Mestre (evitar la ZTL de Venecia)",
+      "Devolución del carro en Mestre (evitar la ZTL de Venecia)",
       "Tren Mestre → Venezia Santa Lucia (7 min, €2/persona)",
       "Canal Grande → Rialto → San Marcos caminando",
       "Atardecer en San Marcos o desde Zattere",
@@ -202,7 +202,7 @@ export const destinations: Destination[] = [
     locationDescription:
       "En la costa noreste de Italia, sobre una laguna del mar Adriático — el punto final de la ruta, a 210 km de Val Gardena.",
     whyThisPlace:
-      "Es el cierre perfecto: se devuelve el coche en Mestre (evitando la prohibición de circular en el centro histórico) y se entra a la ciudad en tren en solo 7 minutos, terminando el viaje caminando y sin coche, tal como empezó en Praga.",
+      "Es el cierre perfecto: se devuelve el carro en Mestre (evitando la prohibición de circular en el centro histórico) y se entra a la ciudad en tren en solo 7 minutos, terminando el viaje caminando y sin carro, tal como empezó en Praga.",
   },
 ];
 

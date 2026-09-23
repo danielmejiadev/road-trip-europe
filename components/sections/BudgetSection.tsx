@@ -200,8 +200,9 @@ export function BudgetSection() {
           📋 Resumen día a día
         </h3>
         <p className="text-xs text-[var(--color-text-muted)] mb-4">
-          Basado en los precios ya cargados en el itinerario (actividades, cena y alojamiento) para 4 personas /
-          2 habitaciones — es una vista más detallada, no la misma cifra que las categorías planas de arriba.
+          Todos los ítems con precio del día (desayuno, almuerzo, cena, entradas y alojamiento) para 4 personas /
+          2 habitaciones — el total es siempre la suma exacta de lo que se ve abajo, es una vista más detallada que
+          las categorías planas de arriba.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {dayCostSummaries.map((day) => (
@@ -212,35 +213,34 @@ export function BudgetSection() {
               </div>
 
               <div className="space-y-2 mb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-xs text-[var(--color-text-secondary)] flex items-start gap-1.5">
-                    <span aria-hidden="true">🍽️</span>
-                    {day.diningLabel ?? "Sin cena programada"}
-                  </span>
-                  {day.diningTotal !== undefined && (
-                    <span className="text-xs text-[var(--color-text-muted)] flex-shrink-0">
-                      {formatEur(day.diningTotal)}
+                {day.items.map((item) => (
+                  <div key={item.label} className="flex items-start justify-between gap-2">
+                    <span className="text-xs text-[var(--color-text-secondary)] flex items-start gap-1.5 min-w-0">
+                      <span aria-hidden="true" className="flex-shrink-0">{item.icon}</span>
+                      <span className="truncate">{item.label}</span>
                     </span>
-                  )}
-                </div>
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-xs text-[var(--color-text-secondary)] flex items-start gap-1.5">
-                    <span aria-hidden="true">🏨</span>
-                    {day.hotel ?? "Sin alojamiento programado"}
-                  </span>
-                  {day.hotelTotal !== undefined && (
-                    <span className="text-xs text-[var(--color-text-muted)] flex-shrink-0">
-                      {formatEur(day.hotelTotal)}
-                    </span>
-                  )}
-                </div>
+                    <div className="flex items-center gap-2 flex-shrink-0 text-right">
+                      <span className="text-xs text-[var(--color-text-muted)] whitespace-nowrap">
+                        {formatEur(item.unitPrice)}/{item.unitLabel === "habitación" ? "hab." : "pers."}
+                      </span>
+                      <span className="text-xs font-medium text-[var(--color-text-primary)] whitespace-nowrap">
+                        {formatEur(item.total)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
                 <span className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
                   Total del día
                 </span>
-                <span className="text-sm font-bold text-[var(--color-accent)]">{formatEur(day.dayTotal)}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[var(--color-text-muted)] whitespace-nowrap">
+                    {formatEur(Math.round(day.dayTotal / 4))}/pers.
+                  </span>
+                  <span className="text-sm font-bold text-[var(--color-accent)]">{formatEur(day.dayTotal)}</span>
+                </div>
               </div>
             </Card>
           ))}

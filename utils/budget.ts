@@ -1,4 +1,4 @@
-import type { BudgetCategory, BudgetSummary, DayCostSummary, DayItinerary } from "@/lib/types";
+import type { BudgetCategory, BudgetSummary, DayCostLineItem, DayCostSummary, DayItinerary } from "@/lib/types";
 
 const TRAVELERS_COUNT = 4;
 const ROOMS_COUNT = 2;
@@ -21,30 +21,46 @@ export function getBudgetSummary(categories: BudgetCategory[]): BudgetSummary {
   };
 }
 
-// Per-day breakdown (dinner, lodging, day total) computed straight from the
-// itinerary's own priced activities and hotel fields — not the flat whole-trip
-// category averages above, so the two views can legitimately differ.
+// Per-day breakdown computed straight from the itinerary's own priced
+// activities (breakfast, lunch, dinner, entrance fees — every one of them,
+// not just dinner) and hotel fields — not the flat whole-trip category
+// averages above, so the two views can legitimately differ. The day total is
+// always the exact sum of the line items shown, nothing hidden.
 export function getDayCostSummaries(itinerary: DayItinerary[]): DayCostSummary[] {
   return itinerary.map((day) => {
-    const diningActivities = day.activities.filter((activity) => activity.type === "dining");
-    const dinnerActivity =
-      [...diningActivities].reverse().find((activity) => activity.title.startsWith("Cena")) ??
-      diningActivities[diningActivities.length - 1];
+    const items: DayCostLineItem[] = [];
 
-    const activitiesTotal = day.activities.reduce(
-      (sum, activity) => sum + (activity.pricePerPerson ?? 0) * TRAVELERS_COUNT,
-      0,
-    );
-    const hotelTotal = day.hotelPricePerRoom ? day.hotelPricePerRoom * ROOMS_COUNT : 0;
+    for (const activity of day.activities) {
+      if (activity.pricePerPerson && activity.pricePerPerson > 0) {
+        items.push({
+          label: activity.title,
+          icon: activity.type === "dining" ? "🍽️" : "🎟️",
+          unitLabel: "persona",
+          unitPrice: activity.pricePerPerson,
+          units: TRAVELERS_COUNT,
+          total: activity.pricePerPerson * TRAVELERS_COUNT,
+        });
+      }
+    }
+
+    if (day.hotel && day.hotelPricePerRoom) {
+      items.push({
+        label: day.hotel,
+        icon: "🏨",
+        unitLabel: "habitación",
+        unitPrice: day.hotelPricePerRoom,
+        units: ROOMS_COUNT,
+        total: day.hotelPricePerRoom * ROOMS_COUNT,
+      });
+    }
+
+    const dayTotal = items.reduce((sum, item) => sum + item.total, 0);
 
     return {
       dayNumber: day.dayNumber,
       location: day.location,
-      diningLabel: dinnerActivity?.title,
-      diningTotal: dinnerActivity?.pricePerPerson ? dinnerActivity.pricePerPerson * TRAVELERS_COUNT : undefined,
-      hotel: day.hotel,
-      hotelTotal: day.hotelPricePerRoom ? hotelTotal : undefined,
-      dayTotal: activitiesTotal + hotelTotal,
+      items,
+      dayTotal,
     };
   });
 }

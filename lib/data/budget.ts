@@ -6,8 +6,8 @@ import type { BudgetCategory, Vignette } from "@/lib/types";
 // Bovec 1n×€80 + Val Gardena 1n×€110 + Venecia 1n×€130 = €1.315 por habitación → ×2 habitaciones.
 const ACCOMMODATION_TOTAL = (3 * 90 + 1 * 85 + 2 * 80 + 3 * 100 + 2 * 90 + 1 * 80 + 1 * 110 + 1 * 130) * 2;
 
-// Alquiler de coche: se recoge el día 4 ("Recogida del coche") y se entrega el día 14
-// ("Devolución del coche en Mestre") → 11 días de alquiler, no 10.
+// Alquiler de carro: se recoge el día 4 ("Recogida del carro") y se entrega el día 14
+// ("Devolución del carro en Mestre") → 11 días de alquiler, no 10.
 const CAR_RENTAL_DAYS = 11;
 const CAR_RENTAL_DAILY_RATE = 60;
 
@@ -26,7 +26,7 @@ export const budgetCategories: BudgetCategory[] = [
     notes: "2 habitaciones × precio real por noche de cada destino × 14 noches (Praga a Venecia)",
   },
   {
-    category: "Alquiler de coche",
+    category: "Alquiler de carro",
     icon: "🚗",
     unitLabel: "días",
     unitCount: CAR_RENTAL_DAYS,
@@ -106,7 +106,7 @@ export const vignettes: Vignette[] = [
     country: "Hungría",
     required: true,
     cost: "~€15 / 10 días",
-    notes: "Comprar online en motorway.hu — se activa con la matrícula del coche",
+    notes: "Comprar online en motorway.hu — se activa con la matrícula del carro",
   },
   {
     country: "Eslovenia",

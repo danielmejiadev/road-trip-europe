@@ -106,13 +106,19 @@ export interface BudgetSummary {
   totalPerCouple: number;
 }
 
+export interface DayCostLineItem {
+  label: string;
+  icon: string;
+  unitLabel: "persona" | "habitación";
+  unitPrice: number;
+  units: number;
+  total: number;
+}
+
 export interface DayCostSummary {
   dayNumber: number;
   location: string;
-  diningLabel?: string;
-  diningTotal?: number;
-  hotel?: string;
-  hotelTotal?: number;
+  items: DayCostLineItem[];
   dayTotal: number;
 }
 
