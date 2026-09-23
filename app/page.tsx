@@ -7,8 +7,13 @@ import { DayByDay } from "@/components/sections/DayByDay";
 import { MapSection } from "@/components/sections/MapSection";
 import { ScenicDrives } from "@/components/sections/ScenicDrives";
 import { BudgetSection } from "@/components/sections/BudgetSection";
+import { budgetCategories } from "@/lib/data/budget";
+import { getBudgetSummary } from "@/utils/budget";
+import { formatEur } from "@/utils/format";
 
 export default function HomePage() {
+  const budgetSummary = getBudgetSummary(budgetCategories);
+
   return (
     <>
       <a href="#itinerario" className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] bg-[var(--color-accent)] text-[#0a0a0f] px-4 py-2 rounded-lg font-medium text-sm">
@@ -36,7 +41,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-4">
             <span>🇨🇿 🇦🇹 🇭🇺 🇸🇮 🇮🇹</span>
-            <span>14 días · 4 viajeros · ~€1.669/persona</span>
+            <span>14 días · 4 viajeros · ~{formatEur(budgetSummary.totalPerPerson)}/persona</span>
           </div>
         </div>
       </footer>

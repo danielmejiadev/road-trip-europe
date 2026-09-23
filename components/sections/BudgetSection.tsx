@@ -1,9 +1,14 @@
-import { budgetSummary, vignettes, drivingLegs } from "@/lib/data/budget";
+import { budgetCategories, vignettes, drivingLegs } from "@/lib/data/budget";
+import { itinerary } from "@/lib/data/itinerary";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatEur } from "@/utils/format";
+import { getBudgetSummary, getDayCostSummaries } from "@/utils/budget";
 
 export function BudgetSection() {
+  const budgetSummary = getBudgetSummary(budgetCategories);
+  const dayCostSummaries = getDayCostSummaries(itinerary);
+
   return (
     <section id="presupuesto" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="mb-10">
@@ -100,10 +105,29 @@ export function BudgetSection() {
               ))}
             </tbody>
             <tfoot>
+              <tr className="border-t border-[var(--color-border)]">
+                <td colSpan={2} className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg" aria-hidden="true">🛡️</span>
+                    <div>
+                      <p className="text-sm font-medium text-[var(--color-text-primary)]">Margen de seguridad</p>
+                      <p className="text-xs text-[var(--color-text-muted)] hidden sm:block">
+                        10% adicional sobre {formatEur(budgetSummary.subtotalFourPeople)} por cambios de precio,
+                        tipo de cambio o imprevistos
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <span className="text-sm font-semibold text-[var(--color-text-primary)]">
+                    {formatEur(budgetSummary.safetyMarginAmount)}
+                  </span>
+                </td>
+              </tr>
               <tr className="border-t-2 border-[var(--color-accent)]/30">
                 <td colSpan={2} className="px-4 py-4">
                   <span className="text-base font-bold text-[var(--color-text-primary)]">
-                    Total estimado (4 personas)
+                    Total estimado (4 personas, con margen)
                   </span>
                 </td>
                 <td className="px-4 py-4 text-right">
@@ -167,6 +191,59 @@ export function BudgetSection() {
               </div>
             </Card>
           </div>
+        </div>
+      </div>
+
+      {/* Resumen día a día */}
+      <div className="mt-10">
+        <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
+          📋 Resumen día a día
+        </h3>
+        <p className="text-xs text-[var(--color-text-muted)] mb-4">
+          Basado en los precios ya cargados en el itinerario (actividades, cena y alojamiento) para 4 personas /
+          2 habitaciones — es una vista más detallada, no la misma cifra que las categorías planas de arriba.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {dayCostSummaries.map((day) => (
+            <Card key={day.dayNumber} className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <Badge variant="accent">Día {day.dayNumber}</Badge>
+                <span className="text-xs text-[var(--color-text-muted)] truncate ml-2">{day.location}</span>
+              </div>
+
+              <div className="space-y-2 mb-3">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs text-[var(--color-text-secondary)] flex items-start gap-1.5">
+                    <span aria-hidden="true">🍽️</span>
+                    {day.diningLabel ?? "Sin cena programada"}
+                  </span>
+                  {day.diningTotal !== undefined && (
+                    <span className="text-xs text-[var(--color-text-muted)] flex-shrink-0">
+                      {formatEur(day.diningTotal)}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs text-[var(--color-text-secondary)] flex items-start gap-1.5">
+                    <span aria-hidden="true">🏨</span>
+                    {day.hotel ?? "Sin alojamiento programado"}
+                  </span>
+                  {day.hotelTotal !== undefined && (
+                    <span className="text-xs text-[var(--color-text-muted)] flex-shrink-0">
+                      {formatEur(day.hotelTotal)}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
+                <span className="text-xs font-semibold text-[var(--color-text-primary)] uppercase tracking-wider">
+                  Total del día
+                </span>
+                <span className="text-sm font-bold text-[var(--color-accent)]">{formatEur(day.dayTotal)}</span>
+              </div>
+            </Card>
+          ))}
         </div>
       </div>
     </section>

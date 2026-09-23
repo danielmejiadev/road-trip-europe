@@ -1,4 +1,7 @@
 import { Card } from "@/components/ui/Card";
+import { budgetCategories } from "@/lib/data/budget";
+import { formatEur } from "@/utils/format";
+import { getBudgetSummary } from "@/utils/budget";
 
 interface StatTile {
   icon: string;
@@ -7,16 +10,23 @@ interface StatTile {
   sublabel?: string;
 }
 
-const statTiles: StatTile[] = [
-  { icon: "👥", value: "4", label: "Viajeros", sublabel: "2 parejas" },
-  { icon: "🌍", value: "5", label: "Países", sublabel: "CZ · AT · HU · SI · IT" },
-  { icon: "🚗", value: "1.805 km", label: "En carretera", sublabel: "~22h de conducción" },
-  { icon: "🏨", value: "13", label: "Noches", sublabel: "8 destinos" },
-  { icon: "📅", value: "14", label: "Días", sublabel: "1-14 septiembre 2027" },
-  { icon: "💶", value: "~€1.669", label: "Por persona", sublabel: "~€3.337 por pareja" },
-];
-
 export function TripDashboard() {
+  const budgetSummary = getBudgetSummary(budgetCategories);
+
+  const statTiles: StatTile[] = [
+    { icon: "👥", value: "4", label: "Viajeros", sublabel: "2 parejas" },
+    { icon: "🌍", value: "5", label: "Países", sublabel: "CZ · AT · HU · SI · IT" },
+    { icon: "🚗", value: "1.805 km", label: "En carretera", sublabel: "~22h de conducción" },
+    { icon: "🏨", value: "14", label: "Noches", sublabel: "8 destinos" },
+    { icon: "📅", value: "14", label: "Días", sublabel: "1-14 septiembre 2027" },
+    {
+      icon: "💶",
+      value: `~${formatEur(budgetSummary.totalPerPerson)}`,
+      label: "Por persona",
+      sublabel: `~${formatEur(budgetSummary.totalPerCouple)} por pareja`,
+    },
+  ];
+
   return (
     <section id="dashboard" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-10">

@@ -95,9 +95,21 @@ export interface BudgetCategory {
 
 export interface BudgetSummary {
   categories: BudgetCategory[];
+  subtotalFourPeople: number;
+  safetyMarginAmount: number;
   totalFourPeople: number;
   totalPerPerson: number;
   totalPerCouple: number;
+}
+
+export interface DayCostSummary {
+  dayNumber: number;
+  location: string;
+  diningLabel?: string;
+  diningTotal?: number;
+  hotel?: string;
+  hotelTotal?: number;
+  dayTotal: number;
 }
 
 export interface ScenicDrive {
