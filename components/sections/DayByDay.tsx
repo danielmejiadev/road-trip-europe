@@ -143,7 +143,7 @@ function ActivityDetailModal({ activity, destinationId, onClose }: ActivityDetai
             </button>
           )}
 
-          <div className="p-6 relative">
+          <div className="p-4 sm:p-6 relative">
             <div className="flex items-center gap-2 flex-wrap mb-3">
               <span className="text-xl" aria-hidden="true">
                 {ACTIVITY_ICONS[activity.type] ?? "📍"}
@@ -328,7 +328,7 @@ export function DayByDay() {
         </p>
       </div>
 
-      <div className="flex gap-6 lg:gap-10">
+      <div className="flex flex-col sm:flex-row gap-6 lg:gap-10">
         {/* Selector de días — columna izquierda */}
         <aside className="hidden sm:flex flex-col gap-1 flex-shrink-0" style={{ minWidth: "120px" }}>
           {itinerary.map((day) => (

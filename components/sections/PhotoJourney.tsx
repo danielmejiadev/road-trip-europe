@@ -34,7 +34,7 @@ function DestinationDetailModal({ destination, onClose }: DestinationDetailModal
             </button>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <div className="flex items-center gap-2 flex-wrap mb-3">
               <span className="text-2xl" aria-hidden="true">{destination.countryFlag}</span>
               <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider">

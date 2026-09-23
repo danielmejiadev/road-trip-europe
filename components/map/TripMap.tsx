@@ -31,7 +31,7 @@ export default function TripMap() {
     <MapContainer
       center={[48.5, 15.0]}
       zoom={5}
-      style={{ height: "500px", width: "100%", borderRadius: "12px" }}
+      style={{ height: "100%", width: "100%", borderRadius: "12px" }}
       className="z-10"
     >
       <TileLayer

@@ -18,27 +18,27 @@ export function Hero() {
       </div>
 
       {/* Contenido principal del hero */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 pt-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 pt-24 sm:pt-32">
         <div className="max-w-3xl">
-          <p className="text-[var(--color-accent)] text-sm font-medium tracking-widest uppercase mb-4">
+          <p className="text-[var(--color-accent)] text-xs sm:text-sm font-medium tracking-widest uppercase mb-3 sm:mb-4">
             Road Trip · Septiembre 2027
           </p>
           <h1
-            className="text-6xl sm:text-7xl lg:text-8xl font-bold italic mb-6 leading-tight"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold italic mb-4 sm:mb-6 leading-tight"
             style={{ fontFamily: "var(--font-display)" }}
           >
             <span className="text-gold-gradient">De Praga</span>
             <br />
             <span className="text-[var(--color-text-primary)]">a Venecia</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-[var(--color-text-secondary)] mb-8 leading-relaxed">
+          <p className="text-base sm:text-xl md:text-2xl text-[var(--color-text-secondary)] mb-6 sm:mb-8 leading-relaxed">
             14 días por Europa · 5 países · 1.805 km
             <br />
-            <span className="text-[var(--color-text-muted)] text-lg">4 viajeros · 2 parejas</span>
+            <span className="text-[var(--color-text-muted)] text-sm sm:text-lg">4 viajeros · 2 parejas</span>
           </p>
 
           {/* Ruta de destinos */}
-          <div className="flex flex-wrap items-center gap-2 mb-10">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 mb-8 sm:mb-10">
             {[
               { flag: "🇨🇿", city: "Praga" },
               { flag: "🇨🇿", city: "Český Krumlov" },

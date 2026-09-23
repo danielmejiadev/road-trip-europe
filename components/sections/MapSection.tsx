@@ -8,10 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 const TripMap = dynamic(() => import("@/components/map/TripMap"), {
   ssr: false,
   loading: () => (
-    <div
-      className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center"
-      style={{ height: "500px" }}
-    >
+    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] flex items-center justify-center h-[320px] sm:h-[420px] lg:h-[500px]">
       <div className="text-center">
         <div className="text-4xl mb-3" aria-hidden="true">🗺️</div>
         <p className="text-[var(--color-text-muted)] text-sm">Cargando mapa…</p>
@@ -35,7 +32,7 @@ export function MapSection() {
         </p>
       </div>
 
-      <div className="rounded-xl overflow-hidden border border-[var(--color-border)]">
+      <div className="rounded-xl overflow-hidden border border-[var(--color-border)] h-[320px] sm:h-[420px] lg:h-[500px]">
         <TripMap />
       </div>
 
