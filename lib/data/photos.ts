@@ -282,6 +282,41 @@ export const tripPhotos: TripPhoto[] = [
     unsplashId: "1763844598924-2f13f94caa4c",
     status: "mock" as const,
   },
+  {
+    id: "prague-airport",
+    destinationId: "prague",
+    caption: "Aeropuerto de Praga",
+    unsplashId: "1751951820100-4b88afe50840",
+    status: "mock" as const,
+  },
+  {
+    id: "generic-road-trip",
+    destinationId: "austria",
+    caption: "Carretera panorámica europea",
+    unsplashId: "1722192298791-a7842ae60d09",
+    status: "mock" as const,
+  },
+  {
+    id: "generic-cafe-terrace",
+    destinationId: "prague",
+    caption: "Terraza de café en el centro histórico",
+    unsplashId: "1775042698367-df33ed52191a",
+    status: "mock" as const,
+  },
+  {
+    id: "generic-elegant-dinner",
+    destinationId: "budapest",
+    caption: "Cena especial de despedida",
+    unsplashId: "1631606305238-b76ec0f86af3",
+    status: "mock" as const,
+  },
+  {
+    id: "generic-rustic-dinner",
+    destinationId: "bled",
+    caption: "Plato tradicional centroeuropeo",
+    unsplashId: "1766589152426-5b18142750c3",
+    status: "mock" as const,
+  },
 ];
 
 export function getUnsplashUrl(unsplashId: string): string {
