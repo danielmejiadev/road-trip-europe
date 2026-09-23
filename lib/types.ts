@@ -29,6 +29,8 @@ export interface TimelineActivity {
   isHighlight?: boolean;
   /** Curated photo ids from `tripPhotos`. Falls back to the destination gallery when empty. */
   photoIds?: string[];
+  /** Why this place/activity matters — history or practical reasons to go, shown in the detail view. */
+  context?: string;
 }
 
 export interface DrivingLeg {
