@@ -22,6 +22,10 @@ export const destinations: Destination[] = [
       "Gastronomía checa: svíčková, svíčková",
     ],
     photoId: "prague-panorama",
+    locationDescription:
+      "Capital de la República Checa, a orillas del río Vltava, en pleno centro de Europa — a unos 350 km de Berlín, 330 km de Viena y 280 km de Múnich.",
+    whyThisPlace:
+      "Es el punto de partida obvio: vuelos baratos desde casi cualquier ciudad, un casco histórico medieval que sobrevivió intacto a las dos guerras mundiales, y una ciudad que se disfruta perfectamente a pie y en transporte público antes de recoger el coche de alquiler el día 4.",
   },
   {
     id: "cesky-krumlov",
@@ -43,6 +47,10 @@ export const destinations: Destination[] = [
       "Cena en Na Louží (gastronomía tradicional checa)",
     ],
     photoId: "cesky-krumlov-castle",
+    locationDescription:
+      "Pueblo medieval a 170 km al sur de Praga, en la región de Bohemia del Sur, muy cerca de la frontera con Austria.",
+    whyThisPlace:
+      "Es la escala perfecta para la primera etapa en coche: solo 2h30 desde Praga, rompe el trayecto largo hacia Austria y permite dormir en un pueblo Patrimonio de la Humanidad que la mayoría de turistas solo ve en una excursión de un día desde Praga.",
   },
   {
     id: "austria",
@@ -63,6 +71,10 @@ export const destinations: Destination[] = [
       "Paisajes alpinos y desayunos Gasthof con vistas",
     ],
     photoId: "gosausee",
+    locationDescription:
+      "Región de lagos alpinos en el centro de Austria, entre Salzburgo y Graz, a unos 200 km al suroeste de Viena.",
+    whyThisPlace:
+      "Conecta Bohemia con Hungría sin renunciar a los Alpes: Hallstatt y el Gosausee están literalmente de camino, y quedarse 2 noches (en vez de solo parar unas horas, como hace la mayoría) permite ver Hallstatt al amanecer, sin las multitudes de autobuses turísticos del mediodía.",
   },
   {
     id: "budapest",
@@ -85,6 +97,10 @@ export const destinations: Destination[] = [
       "Atardecer desde la Colina Gellért",
     ],
     photoId: "budapest-parliament",
+    locationDescription:
+      "Capital de Hungría, dividida por el Danubio entre las colinas de Buda y la llanura de Pest, a 380 km al sureste de Gosau.",
+    whyThisPlace:
+      "Es la ciudad más grande de toda la ruta y se le dan 3 noches -el doble que a la mayoría de paradas- porque hay para varios días distintos: baños termales, la mejor gastronomía del viaje, y una ciudad que cambia por completo de cara según se vea de día, de noche o desde el agua en un crucero.",
   },
   {
     id: "bled",
@@ -107,6 +123,10 @@ export const destinations: Destination[] = [
       "Cena en Pr' Skavcu (restaurante de granja local)",
     ],
     photoId: "lake-bled",
+    locationDescription:
+      "En los Alpes Julianos, al noroeste de Eslovenia, a solo 50 km de la frontera con Italia y 540 km al suroeste de Budapest — la etapa de conducción más larga de todo el viaje.",
+    whyThisPlace:
+      "Bled es la postal que todo el mundo reconoce, pero Bohinj (20 minutos más allá, ya dentro del Parque Nacional de Triglav) es donde de verdad se respira naturaleza sin las multitudes — por eso el alojamiento se elige en Bohinj y Bled se visita como excursión de medio día, no al revés.",
   },
   {
     id: "soca",
@@ -128,6 +148,10 @@ export const destinations: Destination[] = [
       "Paseo junto al Soča esmeralda en Bovec",
     ],
     photoId: "soca-river",
+    locationDescription:
+      "Valle alpino en el extremo noroeste de Eslovenia, pegado a la frontera italiana, conectado con Bled a través del legendario Paso de Vršič.",
+    whyThisPlace:
+      "Es la única forma de cruzar los Alpes Julianos en coche sin dar un rodeo de horas: el Vršič conecta Bled con Italia en un solo día épico de curvas, y de paso descubre uno de los ríos más fotogénicos de Europa que casi ningún itinerario de 'lo esencial de Eslovenia' incluye.",
   },
   {
     id: "dolomites",
@@ -149,6 +173,10 @@ export const destinations: Destination[] = [
       "Lago di Braies si el itinerario lo permite",
     ],
     photoId: "dolomites-seceda",
+    locationDescription:
+      "Cordillera en el norte de Italia (Trentino-Alto Adigio/Südtirol), a unos 200 km de la frontera eslovena cruzando por Tarvisio.",
+    whyThisPlace:
+      "Val Gardena da acceso directo al teleférico de Seceda en pocos minutos, evitando las carreteras saturadas de otras bases dolomíticas más conocidas como Cortina — Ortisei está igual de bien situado y con muchas menos multitudes.",
   },
   {
     id: "venice",
@@ -171,6 +199,10 @@ export const destinations: Destination[] = [
       "Alojamiento en Cannaregio — más auténtico y barato",
     ],
     photoId: "venice-canal",
+    locationDescription:
+      "En la costa noreste de Italia, sobre una laguna del mar Adriático — el punto final de la ruta, a 210 km de Val Gardena.",
+    whyThisPlace:
+      "Es el cierre perfecto: se devuelve el coche en Mestre (evitando la prohibición de circular en el centro histórico) y se entra a la ciudad en tren en solo 7 minutos, terminando el viaje caminando y sin coche, tal como empezó en Praga.",
   },
 ];
 

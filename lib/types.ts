@@ -72,6 +72,10 @@ export interface Destination {
   description: string;
   highlights: string[];
   photoId: string;
+  /** Where it sits geographically relative to the rest of the route. */
+  locationDescription: string;
+  /** Why this stop made the cut over other nearby options. */
+  whyThisPlace: string;
 }
 
 export interface Hotel {
