@@ -124,6 +124,16 @@ h4 {
   -webkit-backdrop-filter: blur(16px) saturate(130%);
 }
 
+/* Animated route line on the trip map ("marching ants" effect) */
+.animated-route-line {
+  animation: route-dash-flow 1s linear infinite;
+}
+@keyframes route-dash-flow {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -132,5 +142,8 @@ h4 {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .animated-route-line {
+    animation: none;
   }
 }

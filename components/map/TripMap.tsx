@@ -39,14 +39,15 @@ export default function TripMap() {
         url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
       />
 
-      {/* Línea de ruta */}
+      {/* Línea de ruta animada (efecto "marching ants") */}
       <Polyline
         positions={routeCoordinates}
         pathOptions={{
           color: "#e8b86d",
           weight: 3,
-          opacity: 0.8,
-          dashArray: "8, 4",
+          opacity: 0.9,
+          dashArray: "10, 8",
+          className: "animated-route-line",
         }}
       />
 
