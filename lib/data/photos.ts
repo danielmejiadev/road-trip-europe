@@ -331,6 +331,10 @@ export function getPrimaryPhoto(destinationId: string): TripPhoto | undefined {
   return tripPhotos.find((photo) => photo.destinationId === destinationId);
 }
 
+export function getPhotoById(photoId: string): TripPhoto | undefined {
+  return tripPhotos.find((photo) => photo.id === photoId);
+}
+
 // Returns the activity's curated photos when available, otherwise falls back
 // to the destination's general photo gallery so the detail view always has images.
 export function getActivityPhotos(activity: TimelineActivity, destinationId: string | undefined): TripPhoto[] {

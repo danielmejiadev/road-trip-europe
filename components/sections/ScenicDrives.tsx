@@ -1,5 +1,5 @@
 import { scenicDrives } from "@/lib/data/itinerary";
-import { getUnsplashUrl, getPrimaryPhoto } from "@/lib/data/photos";
+import { getUnsplashUrl, getPhotoById } from "@/lib/data/photos";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { formatKm, formatDriveTime } from "@/utils/format";
@@ -33,10 +33,8 @@ export function ScenicDrives() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {scenicDrives.map((drive) => {
-          const primaryPhoto = getPrimaryPhoto(drive.id.split("-")[0]);
-          const photoUrl = primaryPhoto
-            ? getUnsplashUrl(primaryPhoto.unsplashId)
-            : getUnsplashUrl("1476514525405-309791a2be943");
+          const photo = getPhotoById(drive.photoId);
+          const photoUrl = photo ? getUnsplashUrl(photo.unsplashId) : getUnsplashUrl("1541849546-216549ae216d");
 
           const difficultyVariant = DIFFICULTY_VARIANTS[drive.difficulty];
 
